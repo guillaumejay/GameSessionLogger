@@ -101,7 +101,7 @@ At the end of a session or when starting fresh, a game master needs to clear all
 - **FR-001**: System MUST allow users to create, name, and select game sessions
 - **FR-002**: System MUST scope all events to the currently active session
 - **FR-003**: System MUST allow users to switch between different sessions
-- **FR-004**: System MUST provide predefined event tags: "Combat", "Roleplay", "Downtime", "Scoring", "Meal", and support custom/other event tags
+- **FR-004**: System MUST provide predefined event tags: "Combat", "Roleplay", "Downtime", "Scoring", "Meal", and "Other" (Note: Custom tag creation deferred to v2)
 - **FR-005**: System MUST allow users to select an event tag with a single click/tap
 - **FR-006**: System MUST capture the current system time automatically when an event tag is selected
 - **FR-007**: System MUST provide an always-visible inline text input field below event tags for users to optionally add descriptive text to each event
@@ -156,7 +156,6 @@ At the end of a session or when starting fresh, a game master needs to clear all
 - **SC-003**: Users can log an event in under 3 seconds (tag selection + optional description in inline field + save)
 - **SC-004**: The system displays logged events within 100 milliseconds of logging
 - **SC-005**: Users can successfully log at least 100 events per session without performance degradation
-- **SC-006**: 95% of users can understand how to log an event without instructions on first use
 - **SC-007**: All logged events and sessions persist correctly across browser restarts
 - **SC-008**: Event deletion (individual with inline confirmation or bulk) completes within 500 milliseconds
 - **SC-009**: The interface remains responsive and usable on mobile devices during active gameplay

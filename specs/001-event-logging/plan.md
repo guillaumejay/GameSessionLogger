@@ -1,37 +1,56 @@
-# Implementation Plan: [FEATURE]
+# Implementation Plan: Game Session Event Logging
 
-**Branch**: `[###-feature-name]` | **Date**: [DATE] | **Spec**: [link]
-**Input**: Feature specification from `/specs/[###-feature-name]/spec.md`
+**Branch**: `001-event-logging` | **Date**: 2025-11-14 | **Spec**: [spec.md](spec.md)
+**Input**: Feature specification from `/specs/001-event-logging/spec.md`
 
 **Note**: This template is filled in by the `/speckit.plan` command. See `.specify/templates/commands/plan.md` for the execution workflow.
 
 ## Summary
 
-[Extract from feature spec: primary requirement + technical approach from research]
+Build a responsive web application for logging game session events with named session management, predefined event tags (Combat, Roleplay, Downtime, Scoring, Meal, Other), optional descriptions via inline text field, and markdown table export to clipboard. All data persists locally in the browser (offline-first). Events display in reverse chronological order within each session. Individual event deletion uses inline confirmation prompts. Technical approach: Vue 3 Composition API with TypeScript strict mode, Tailwind CSS for styling, IndexedDB for session/event persistence, and Clipboard API for export.
 
 ## Technical Context
 
-<!--
-  ACTION REQUIRED: Replace the content in this section with the technical details
-  for the project. The structure here is presented in advisory capacity to guide
-  the iteration process.
--->
-
-**Language/Version**: [e.g., Python 3.11, Swift 5.9, Rust 1.75 or NEEDS CLARIFICATION]  
-**Primary Dependencies**: [e.g., FastAPI, UIKit, LLVM or NEEDS CLARIFICATION]  
-**Storage**: [if applicable, e.g., PostgreSQL, CoreData, files or N/A]  
-**Testing**: [e.g., pytest, XCTest, cargo test or NEEDS CLARIFICATION]  
-**Target Platform**: [e.g., Linux server, iOS 15+, WASM or NEEDS CLARIFICATION]
-**Project Type**: [single/web/mobile - determines source structure]  
-**Performance Goals**: [domain-specific, e.g., 1000 req/s, 10k lines/sec, 60 fps or NEEDS CLARIFICATION]  
-**Constraints**: [domain-specific, e.g., <200ms p95, <100MB memory, offline-capable or NEEDS CLARIFICATION]  
-**Scale/Scope**: [domain-specific, e.g., 10k users, 1M LOC, 50 screens or NEEDS CLARIFICATION]
+**Language/Version**: TypeScript 5.x (strict mode) / ECMAScript 2022+
+**Primary Dependencies**: Vue 3 (latest), Vite 6.x (latest), Tailwind CSS 4.x (latest), IndexedDB (via Dexie.js 4.x)
+**Storage**: IndexedDB for session and event data, localStorage for user preferences
+**Testing**: Vitest for unit/component tests (optional per spec), Playwright for E2E tests (optional per spec)
+**Target Platform**: Modern browsers (Chrome 90+, Firefox 88+, Safari 14+, Edge 90+) - desktop, tablet, mobile
+**Project Type**: Single-page web application (SPA)
+**Performance Goals**: Event logging <3s, event display <100ms, clipboard copy <1s for 100 events, page load <2s on 3G
+**Constraints**: Offline-capable, no backend/API dependencies, bundle size <500KB gzipped, responsive (mobile/tablet/desktop)
+**Scale/Scope**: Single-user local application, support 100+ events per session, multiple named sessions, <10 components initially
 
 ## Constitution Check
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+### I. Offline-First Architecture ✅
+- **Requirement**: Application must function entirely without server/network
+- **Compliance**: IndexedDB for all session/event data, no external API dependencies
+- **Status**: PASS
+
+### II. Component-Based UI ✅
+- **Requirement**: Vue 3 Composition API, reusable components, single responsibilities
+- **Compliance**: Planned component architecture (SessionSelector, EventLogger, EventList, EventCard, MarkdownExporter)
+- **Status**: PASS
+
+### III. Type Safety (NON-NEGOTIABLE) ✅
+- **Requirement**: TypeScript strict mode, no `any` types, all props/events typed
+- **Compliance**: TypeScript 5.x strict mode, all entities and interfaces fully typed
+- **Status**: PASS
+
+### IV. User-Centric Design ✅
+- **Requirement**: Responsive (mobile/tablet/desktop), intuitive UX, immediate visual feedback
+- **Compliance**: Tailwind CSS responsive utilities, inline text field for speed, visual feedback on all actions
+- **Status**: PASS
+
+### V. Data Integrity ✅
+- **Requirement**: Never lose data, immediate persistence, handle storage limits gracefully
+- **Compliance**: IndexedDB with automatic persistence on every event, markdown export for backup
+- **Status**: PASS
+
+**GATE RESULT**: ALL CHECKS PASSED ✅ - Proceed to Phase 0
 
 ## Project Structure
 
@@ -48,57 +67,88 @@ specs/[###-feature]/
 ```
 
 ### Source Code (repository root)
-<!--
-  ACTION REQUIRED: Replace the placeholder tree below with the concrete layout
-  for this feature. Delete unused options and expand the chosen structure with
-  real paths (e.g., apps/admin, packages/something). The delivered plan must
-  not include Option labels.
--->
 
 ```text
-# [REMOVE IF UNUSED] Option 1: Single project (DEFAULT)
 src/
+├── components/
+│   ├── SessionSelector.vue      # Create/select/switch sessions
+│   ├── EventLogger.vue           # Event tag buttons + inline description field
+│   ├── EventList.vue             # Display events in reverse chronological order
+│   ├── EventCard.vue             # Individual event item with inline delete confirmation
+│   └── MarkdownExporter.vue      # Copy to clipboard as markdown table
+├── composables/
+│   ├── useSessionStore.ts        # Session CRUD operations with IndexedDB
+│   ├── useEventStore.ts          # Event CRUD operations with IndexedDB
+│   └── useClipboard.ts           # Clipboard API wrapper with error handling
 ├── models/
+│   ├── Session.ts                # Session entity type definition
+│   └── Event.ts                  # Event entity type definition
 ├── services/
-├── cli/
-└── lib/
+│   └── db.ts                     # IndexedDB initialization (Dexie.js schema)
+├── utils/
+│   └── markdown.ts               # Markdown table formatter with character escaping
+├── App.vue                       # Root component
+└── main.ts                       # Application entry point
 
-tests/
-├── contract/
-├── integration/
-└── unit/
+tests/ (optional per spec)
+├── unit/
+│   ├── composables/
+│   └── utils/
+└── e2e/
+    └── session-logging.spec.ts
 
-# [REMOVE IF UNUSED] Option 2: Web application (when "frontend" + "backend" detected)
-backend/
-├── src/
-│   ├── models/
-│   ├── services/
-│   └── api/
-└── tests/
+public/
+└── favicon.ico
 
-frontend/
-├── src/
-│   ├── components/
-│   ├── pages/
-│   └── services/
-└── tests/
-
-# [REMOVE IF UNUSED] Option 3: Mobile + API (when "iOS/Android" detected)
-api/
-└── [same as backend above]
-
-ios/ or android/
-└── [platform-specific structure: feature modules, UI flows, platform tests]
+index.html
+package.json
+tsconfig.json
+vite.config.ts
+tailwind.config.js
 ```
 
-**Structure Decision**: [Document the selected structure and reference the real
-directories captured above]
+**Structure Decision**: Single-page application structure. All source code in `src/` following Vue 3 best practices with Composition API. Components are feature-focused (session management, event logging, display, export). Composables encapsulate reactive state and business logic. Models define TypeScript interfaces for type safety. Services handle infrastructure (database). Utils for pure functions (markdown formatting).
 
 ## Complexity Tracking
 
 > **Fill ONLY if Constitution Check has violations that must be justified**
 
-| Violation | Why Needed | Simpler Alternative Rejected Because |
-|-----------|------------|-------------------------------------|
-| [e.g., 4th project] | [current need] | [why 3 projects insufficient] |
-| [e.g., Repository pattern] | [specific problem] | [why direct DB access insufficient] |
+No complexity violations. All constitution principles are satisfied by the planned architecture.
+
+---
+
+## Post-Design Constitution Re-Check
+
+*Re-evaluated after Phase 1 design completion*
+
+### I. Offline-First Architecture ✅
+- **Design Validation**: Dexie.js for IndexedDB (sessions + events), localStorage for active session ID
+- **No Network Dependencies**: All operations client-side, no API calls
+- **Status**: PASS
+
+### II. Component-Based UI ✅
+- **Component Count**: 5 components (SessionSelector, EventLogger, EventList, EventCard, MarkdownExporter)
+- **Composables**: 3 composables (useSessionStore, useEventStore, useClipboard) following Composition API
+- **Single Responsibility**: Each component has clear, focused purpose
+- **Status**: PASS
+
+### III. Type Safety (NON-NEGOTIABLE) ✅
+- **Strict Mode**: TypeScript 5.x with `strict: true` in tsconfig.json
+- **Type Coverage**: Session and Event interfaces in `/models`, all composables fully typed
+- **No `any` Types**: None used in design
+- **Status**: PASS
+
+### IV. User-Centric Design ✅
+- **Responsive**: Tailwind CSS with mobile-first breakpoints (sm, md, lg)
+- **Immediate Feedback**: Visual feedback on all actions (event creation, clipboard copy, deletion)
+- **Intuitive UX**: Inline description field (always visible), inline delete confirmation (no disruptive modals)
+- **Status**: PASS
+
+### V. Data Integrity ✅
+- **Immediate Persistence**: IndexedDB write on every event/session creation/deletion
+- **No Data Loss**: Cascade delete pattern (session → events), UUID primary keys prevent collisions
+- **Storage Limit Handling**: Quota monitoring planned (navigator.storage.estimate())
+- **Backup**: Markdown export provides external backup mechanism
+- **Status**: PASS
+
+**FINAL GATE RESULT**: ALL CHECKS PASSED ✅ - Ready for implementation (Phase 2: /speckit.tasks)
