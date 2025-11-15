@@ -7,7 +7,6 @@ import { isValidEventTag, validateEventDescription } from '../models/Event';
 const events = ref<Event[]>([]);
 const isLoading = ref(false);
 const error = ref<string | null>(null);
-let currentSessionId: string | null = null;
 
 export function useEventStore() {
   async function createEvent(sessionId: string, tag: EventTag, description: string): Promise<Event> {
@@ -42,7 +41,6 @@ export function useEventStore() {
   }
 
   function loadEvents(sessionId: string): void {
-    currentSessionId = sessionId;
     // Live query for events of the current session
     liveQuery(() =>
       db.events

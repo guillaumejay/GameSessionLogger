@@ -1,5 +1,103 @@
-# Vue 3 + TypeScript + Vite
+# Game Session Logger
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+A simple, efficient web application for logging game session events with tags and timestamps. Perfect for tabletop RPG sessions, board game playthroughs, or any gaming session where you want to keep track of what happened.
 
-Learn more about the recommended Project Setup and IDE Support in the [Vue Docs TypeScript Guide](https://vuejs.org/guide/typescript/overview.html#project-setup).
+## Features
+
+- **Session Management**: Create and manage multiple game sessions
+- **Quick Event Logging**: Log events with predefined tags (Combat, Roleplay, Downtime, Scoring, Meal, Other)
+- **Optional Descriptions**: Add detailed descriptions to events (up to 500 characters)
+- **Export to Markdown**: Copy events as a markdown table for sharing on Discord, Slack, GitHub, or Notion
+- **Persistent Storage**: All data stored locally in IndexedDB - no server required
+- **Keyboard Shortcuts**:
+  - `Ctrl+Enter`: Log event with "Other" tag
+  - `Escape`: Clear description field
+- **Responsive Design**: Works on desktop and mobile devices
+
+## Technology Stack
+
+- **Vue 3** with Composition API
+- **TypeScript** (strict mode)
+- **Tailwind CSS 4.x** for styling
+- **Dexie.js 4.x** for IndexedDB management
+- **SweetAlert2** for notifications
+- **Vite 7.x** for build tooling
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js 18+ and npm
+
+### Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/guillaumejay/GameSessionLogger.git
+cd GameSessionLogger
+
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+```
+
+The application will be available at `http://localhost:5173` (or another port if 5173 is in use).
+
+### Building for Production
+
+```bash
+npm run build
+```
+
+The built files will be in the `dist/` directory.
+
+## Usage
+
+1. **Create a Session**: Enter a session name and click the `+` button
+2. **Log Events**: Click on event tag buttons or add a description and use keyboard shortcuts
+3. **Export Events**: Click the clipboard icon to copy all events as a markdown table
+4. **Delete Events**:
+   - Individual: Click trash icon on an event card
+   - Bulk: Click trash icon in the event list header
+5. **Delete Sessions**: Hover over a session and click the trash icon
+
+## Project Structure
+
+```
+src/
+├── components/          # Vue components
+│   ├── EventCard.vue
+│   ├── EventLogger.vue
+│   ├── EventList.vue
+│   ├── MarkdownExporter.vue
+│   └── SessionSelector.vue
+├── composables/         # Vue composables (state management)
+│   ├── useAppVersion.ts
+│   ├── useClipboard.ts
+│   ├── useEventStore.ts
+│   ├── useSessionStore.ts
+│   └── useToast.ts
+├── models/             # TypeScript interfaces and validation
+│   ├── Event.ts
+│   └── Session.ts
+├── services/           # Database services
+│   └── db.ts
+├── utils/              # Utility functions
+│   └── markdown.ts
+├── App.vue             # Root component
+└── main.ts             # Application entry point
+```
+
+## License
+
+MIT License - Copyright (c) 2025 Guillaume JAY
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## Author
+
+Guillaume JAY - [GitHub](https://github.com/guillaumejay)

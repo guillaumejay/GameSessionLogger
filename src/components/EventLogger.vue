@@ -12,8 +12,17 @@ const { createEvent } = useEventStore();
 const { showSuccess, showError } = useToast();
 const description = ref('');
 const isLogging = ref(false);
+const lastClickTime = ref(0);
+const DEBOUNCE_MS = 300;
 
 async function handleTagClick(tag: EventTag) {
+  // Debounce rapid clicks
+  const now = Date.now();
+  if (now - lastClickTime.value < DEBOUNCE_MS) {
+    return;
+  }
+  lastClickTime.value = now;
+
   isLogging.value = true;
   try {
     await createEvent(props.sessionId, tag, description.value);
@@ -24,6 +33,19 @@ async function handleTagClick(tag: EventTag) {
     showError('Failed to log event');
   } finally {
     isLogging.value = false;
+  }
+}
+
+function handleKeydown(event: KeyboardEvent) {
+  // Ctrl+Enter to log event with "Other" tag
+  if (event.ctrlKey && event.key === 'Enter') {
+    event.preventDefault();
+    handleTagClick('Other');
+  }
+  // Escape to clear description
+  else if (event.key === 'Escape') {
+    event.preventDefault();
+    description.value = '';
   }
 }
 </script>
@@ -57,7 +79,12 @@ async function handleTagClick(tag: EventTag) {
         maxlength="500"
         rows="3"
         class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        @keydown="handleKeydown"
       ></textarea>
+      <div class="mt-1 flex justify-between text-xs text-gray-500">
+        <span>Tip: Ctrl+Enter to log, Esc to clear</span>
+        <span>{{ description.length }}/500 characters</span>
+      </div>
     </div>
   </div>
 </template>

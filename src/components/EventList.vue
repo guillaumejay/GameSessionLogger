@@ -3,6 +3,7 @@ import { ref, onMounted, watch } from 'vue';
 import { useEventStore } from '../composables/useEventStore';
 import { useToast } from '../composables/useToast';
 import EventCard from './EventCard.vue';
+import MarkdownExporter from './MarkdownExporter.vue';
 
 const props = defineProps<{
   sessionId: string;
@@ -68,26 +69,35 @@ function handleBulkDeleteCancelled() {
     <div class="flex items-center justify-between">
       <h3 class="text-lg font-semibold text-gray-900">Event Log</h3>
 
-      <!-- Bulk delete button -->
-      <div v-if="events.length > 0">
+      <!-- Action buttons -->
+      <div v-if="events.length > 0" class="flex items-center gap-2">
+        <!-- Export button -->
+        <MarkdownExporter :sessionId="sessionId" />
+
+        <!-- Bulk delete button -->
         <div v-if="!showBulkDeleteConfirmation">
           <button
             @click="handleBulkDeleteRequest"
-            class="px-3 py-1 text-sm text-red-600 hover:text-red-700 hover:bg-red-50 rounded transition"
+            class="p-2 text-red-600 hover:text-red-700 hover:bg-red-50 rounded transition"
+            title="Delete all events"
           >
-            Delete All
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+            </svg>
           </button>
         </div>
         <div v-else class="flex gap-1">
           <button
             @click="handleBulkDeleteConfirmed"
             class="px-3 py-1 text-sm bg-red-600 text-white hover:bg-red-700 rounded transition"
+            title="Confirm deletion"
           >
-            Confirm Delete All
+            Confirm
           </button>
           <button
             @click="handleBulkDeleteCancelled"
             class="px-3 py-1 text-sm bg-gray-300 text-gray-700 hover:bg-gray-400 rounded transition"
+            title="Cancel deletion"
           >
             Cancel
           </button>

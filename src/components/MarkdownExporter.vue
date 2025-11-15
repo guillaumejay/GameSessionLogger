@@ -37,24 +37,15 @@ async function handleCopyToClipboard() {
 </script>
 
 <template>
-  <div class="p-4 bg-white rounded-lg shadow">
-    <div class="flex items-center justify-between">
-      <h3 class="text-lg font-semibold text-gray-900">Export</h3>
-
-      <button
-        @click="handleCopyToClipboard"
-        :disabled="!hasEvents || isCopying"
-        class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition"
-        :title="!hasEvents ? 'No events to copy' : 'Copy events as markdown table'"
-      >
-        <span v-if="isCopying">Copying...</span>
-        <span v-else>Copy to Clipboard</span>
-      </button>
-    </div>
-
-    <!-- Empty state hint -->
-    <div v-if="!hasEvents" class="mt-2 text-xs text-gray-500">
-      No events to copy. Log some events first.
-    </div>
-  </div>
+  <button
+    @click="handleCopyToClipboard"
+    :disabled="!hasEvents || isCopying"
+    class="p-2 bg-green-600 text-white rounded-md hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition"
+    :title="!hasEvents ? 'No events to copy' : 'Copy events as markdown table'"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+      <path d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z" />
+      <path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2 3 3 0 01-3 3H9a3 3 0 01-3-3z" />
+    </svg>
+  </button>
 </template>
