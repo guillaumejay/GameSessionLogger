@@ -28,12 +28,12 @@
 
 **Purpose**: Project initialization and basic structure
 
-- [ ] T001 Initialize Vue 3 + TypeScript + Vite project using `npm create vite@latest game-session-logger -- --template vue-ts`
-- [ ] T002 Install core dependencies: dexie@^4.0.0, tailwindcss@latest, @tailwindcss/vite@latest
-- [ ] T003 Configure Tailwind CSS Vite plugin in vite.config.ts per quickstart.md
-- [ ] T004 Configure TypeScript strict mode in tsconfig.json with strict: true, noImplicitAny: true
-- [ ] T005 Create project directory structure (src/components, src/composables, src/models, src/services, src/utils)
-- [ ] T006 Update src/style.css with `@import "tailwindcss";` for Tailwind 4.x
+- [x] T001 Initialize Vue 3 + TypeScript + Vite project using `npm create vite@latest game-session-logger -- --template vue-ts`
+- [x] T002 Install core dependencies: dexie@^4.0.0, tailwindcss@latest, @tailwindcss/vite@latest
+- [x] T003 Configure Tailwind CSS Vite plugin in vite.config.ts per quickstart.md
+- [x] T004 Configure TypeScript strict mode in tsconfig.json with strict: true, noImplicitAny: true
+- [x] T005 Create project directory structure (src/components, src/composables, src/models, src/services, src/utils)
+- [x] T006 Update src/style.css with `@import "tailwindcss";` for Tailwind 4.x
 
 ---
 
@@ -43,12 +43,12 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T007 [P] Create Session TypeScript interface in src/models/Session.ts with validateSessionName function (1-100 char validation)
-- [ ] T008 [P] Create Event TypeScript interface in src/models/Event.ts with EventTag type, EVENT_TAGS constant, isValidEventTag, and validateEventDescription functions (500 char limit)
-- [ ] T009 Initialize Dexie database schema in src/services/db.ts with GameSessionDatabase class, sessions table (id, createdAt indexes), and events table (id, [sessionId+timestamp] composite index)
-- [ ] T010 [P] Implement useSessionStore composable in src/composables/useSessionStore.ts with createSession, deleteSession, setActiveSession, loadSessions functions and reactive state (sessions, activeSession, isLoading, error)
-- [ ] T011 [P] Implement useEventStore composable in src/composables/useEventStore.ts with createEvent, deleteEvent, deleteAllEvents, loadEvents functions and reactive state (events, isLoading, error)
-- [ ] T012 Verify IndexedDB database creation in browser DevTools Application tab (GameSessionLoggerDB with sessions and events tables)
+- [x] T007 [P] Create Session TypeScript interface in src/models/Session.ts with validateSessionName function (1-100 char validation)
+- [x] T008 [P] Create Event TypeScript interface in src/models/Event.ts with EventTag type, EVENT_TAGS constant, isValidEventTag, and validateEventDescription functions (500 char limit)
+- [x] T009 Initialize Dexie database schema in src/services/db.ts with GameSessionDatabase class, sessions table (id, createdAt indexes), and events table (id, [sessionId+timestamp] composite index)
+- [x] T010 [P] Implement useSessionStore composable in src/composables/useSessionStore.ts with createSession, deleteSession, setActiveSession, loadSessions functions and reactive state (sessions, activeSession, isLoading, error)
+- [x] T011 [P] Implement useEventStore composable in src/composables/useEventStore.ts with createEvent, deleteEvent, deleteAllEvents, loadEvents functions and reactive state (events, isLoading, error)
+- [x] T012 Verify IndexedDB database creation in browser DevTools Application tab (GameSessionLoggerDB with sessions and events tables)
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
@@ -62,16 +62,16 @@
 
 ### Implementation for User Story 1
 
-- [ ] T013 [P] [US1] Create SessionSelector.vue component with session creation form (input maxlength=100, create button) and session list with active state highlighting
-- [ ] T014 [P] [US1] Create EventLogger.vue component with 6 event tag buttons (Combat, Roleplay, Downtime, Scoring, Meal, Other) and always-visible inline description textarea (maxlength=500)
-- [ ] T015 [P] [US1] Create EventCard.vue component to display single event with tag badge, timestamp formatted as HH:MM using Intl.DateTimeFormat (locale-aware), and description text
-- [ ] T016 [US1] Create EventList.vue component to display events array in reverse chronological order using v-for with EventCard, include empty state message
-- [ ] T017 [US1] Integrate SessionSelector into App.vue with useSessionStore, call loadSessions in onMounted lifecycle hook
-- [ ] T018 [US1] Integrate EventLogger and EventList into App.vue conditionally rendered when activeSession exists, pass sessionId prop
-- [ ] T019 [US1] Add visual feedback for event creation success in EventLogger (toast notification, loading spinner during createEvent call)
-- [ ] T020 [US1] Implement responsive layout with Tailwind CSS mobile-first approach (single column mobile, two-column md:grid-cols-3 tablet/desktop)
-- [ ] T021 [US1] Test session creation, event logging with tags and descriptions, and event display in browser manually per acceptance scenarios in spec.md
-- [ ] T022 [US1] Verify events and active session persist across browser refreshes by checking IndexedDB and localStorage activeSessionId
+- [x] T013 [P] [US1] Create SessionSelector.vue component with session creation form (input maxlength=100, create button) and session list with active state highlighting
+- [x] T014 [P] [US1] Create EventLogger.vue component with 6 event tag buttons (Combat, Roleplay, Downtime, Scoring, Meal, Other) and always-visible inline description textarea (maxlength=500)
+- [x] T015 [P] [US1] Create EventCard.vue component to display single event with tag badge, timestamp formatted as HH:MM using Intl.DateTimeFormat (locale-aware), and description text
+- [x] T016 [US1] Create EventList.vue component to display events array in reverse chronological order using v-for with EventCard, include empty state message
+- [x] T017 [US1] Integrate SessionSelector into App.vue with useSessionStore, call loadSessions in onMounted lifecycle hook
+- [x] T018 [US1] Integrate EventLogger and EventList into App.vue conditionally rendered when activeSession exists, pass sessionId prop
+- [x] T019 [US1] Add visual feedback for event creation success in EventLogger (toast notification, loading spinner during createEvent call)
+- [x] T020 [US1] Implement responsive layout with Tailwind CSS mobile-first approach (single column mobile, two-column md:grid-cols-3 tablet/desktop)
+- [x] T021 [US1] Test session creation, event logging with tags and descriptions, and event display in browser manually per acceptance scenarios in spec.md
+- [x] T022 [US1] Verify events and active session persist across browser refreshes by checking IndexedDB and localStorage activeSessionId
 
 **Checkpoint**: At this point, User Story 1 (MVP) should be fully functional - users can create sessions, log events, and view them
 
@@ -85,12 +85,12 @@
 
 ### Implementation for User Story 2
 
-- [ ] T023 [US2] Add inline confirmation UI to EventCard.vue with showInlineConfirmation prop, confirm/cancel buttons rendered conditionally
-- [ ] T024 [US2] Implement delete event handler in EventCard.vue that emits delete-requested, delete-confirmed, delete-cancelled events per contracts/composables-api.md
-- [ ] T025 [US2] Wire delete-confirmed event from EventCard to EventList parent component and call useEventStore.deleteEvent with eventId
-- [ ] T026 [US2] Add empty state message to EventList.vue displayed when events.length === 0 ("No events logged yet")
-- [ ] T027 [US2] Test individual event deletion with inline confirmation flow (click delete → confirm → verify removed, cancel → verify retained)
-- [ ] T028 [US2] Verify deletion completes within 500ms using browser DevTools Performance tab per success criteria SC-008
+- [x] T023 [US2] Add inline confirmation UI to EventCard.vue with showInlineConfirmation prop, confirm/cancel buttons rendered conditionally
+- [x] T024 [US2] Implement delete event handler in EventCard.vue that emits delete-requested, delete-confirmed, delete-cancelled events per contracts/composables-api.md
+- [x] T025 [US2] Wire delete-confirmed event from EventCard to EventList parent component and call useEventStore.deleteEvent with eventId
+- [x] T026 [US2] Add empty state message to EventList.vue displayed when events.length === 0 ("No events logged yet")
+- [x] T027 [US2] Test individual event deletion with inline confirmation flow (click delete → confirm → verify removed, cancel → verify retained)
+- [x] T028 [US2] Verify deletion completes within 500ms using browser DevTools Performance tab per success criteria SC-008
 
 **Checkpoint**: At this point, User Stories 1 AND 2 both work independently
 
@@ -104,16 +104,16 @@
 
 ### Implementation for User Story 3
 
-- [ ] T029 [P] [US3] Create markdown.ts utility in src/utils/markdown.ts with formatEventsAsMarkdownTable function returning markdown table string with pipe-separated columns
-- [ ] T030 [P] [US3] Implement escapeMarkdownCharacters function in src/utils/markdown.ts to escape pipe (|), backslash (\), and newlines in event descriptions per FR-022
-- [ ] T031 [P] [US3] Create useClipboard composable in src/composables/useClipboard.ts with copyToClipboard function wrapping navigator.clipboard.writeText, error handling for unsupported browsers and permission denied
-- [ ] T032 [US3] Create MarkdownExporter.vue component with "Copy to Clipboard" button, receive sessionId prop per contracts/composables-api.md
-- [ ] T033 [US3] Implement clipboard copy logic in MarkdownExporter: fetch events from useEventStore, call formatEventsAsMarkdownTable, call useClipboard.copyToClipboard
-- [ ] T034 [US3] Add visual feedback for successful copy (toast "Copied to clipboard!") and error handling with user-friendly message ("Clipboard access denied. Please check browser permissions.")
-- [ ] T035 [US3] Handle empty event list case in MarkdownExporter - disable button or show message "No events to copy" when events.length === 0
-- [ ] T036 [US3] Integrate MarkdownExporter into App.vue below EventLogger component, pass activeSession.id as sessionId prop
-- [ ] T037 [US3] Test markdown table output by copying and pasting into Discord, Slack, GitHub, or Notion to verify correct rendering with proper column alignment
-- [ ] T038 [US3] Verify clipboard copy completes within 1 second for 100 events using browser DevTools Performance tab per success criteria SC-010
+- [x] T029 [P] [US3] Create markdown.ts utility in src/utils/markdown.ts with formatEventsAsMarkdownTable function returning markdown table string with pipe-separated columns
+- [x] T030 [P] [US3] Implement escapeMarkdownCharacters function in src/utils/markdown.ts to escape pipe (|), backslash (\), and newlines in event descriptions per FR-022
+- [x] T031 [P] [US3] Create useClipboard composable in src/composables/useClipboard.ts with copyToClipboard function wrapping navigator.clipboard.writeText, error handling for unsupported browsers and permission denied
+- [x] T032 [US3] Create MarkdownExporter.vue component with "Copy to Clipboard" button, receive sessionId prop per contracts/composables-api.md
+- [x] T033 [US3] Implement clipboard copy logic in MarkdownExporter: fetch events from useEventStore, call formatEventsAsMarkdownTable, call useClipboard.copyToClipboard
+- [x] T034 [US3] Add visual feedback for successful copy (toast "Copied to clipboard!") and error handling with user-friendly message ("Clipboard access denied. Please check browser permissions.")
+- [x] T035 [US3] Handle empty event list case in MarkdownExporter - disable button or show message "No events to copy" when events.length === 0
+- [x] T036 [US3] Integrate MarkdownExporter into App.vue below EventLogger component, pass activeSession.id as sessionId prop
+- [x] T037 [US3] Test markdown table output by copying and pasting into Discord, Slack, GitHub, or Notion to verify correct rendering with proper column alignment
+- [x] T038 [US3] Verify clipboard copy completes within 1 second for 100 events using browser DevTools Performance tab per success criteria SC-010
 
 **Checkpoint**: All three user stories (US1, US2, US3) should now be independently functional
 
@@ -127,12 +127,12 @@
 
 ### Implementation for User Story 4
 
-- [ ] T039 [US4] Add "Delete All Events" button to EventList.vue footer, styled with destructive color scheme (red background)
-- [ ] T040 [US4] Implement inline confirmation UI for bulk deletion in EventList.vue (consistent with individual delete pattern - show confirm/cancel inline, not modal)
-- [ ] T041 [US4] Wire bulk delete confirm button to useEventStore.deleteAllEvents with activeSession.id parameter
-- [ ] T042 [US4] Show empty state in EventList after bulk deletion completes (events.length === 0 triggers empty message)
-- [ ] T043 [US4] Test bulk deletion with confirmation flow (click Delete All → inline confirm/cancel → verify all removed or retained)
-- [ ] T044 [US4] Verify deletion completes within 500ms for 100 events using browser DevTools Performance tab per success criteria SC-008
+- [x] T039 [US4] Add "Delete All Events" button to EventList.vue footer, styled with destructive color scheme (red background)
+- [x] T040 [US4] Implement inline confirmation UI for bulk deletion in EventList.vue (consistent with individual delete pattern - show confirm/cancel inline, not modal)
+- [x] T041 [US4] Wire bulk delete confirm button to useEventStore.deleteAllEvents with activeSession.id parameter
+- [x] T042 [US4] Show empty state in EventList after bulk deletion completes (events.length === 0 triggers empty message)
+- [x] T043 [US4] Test bulk deletion with confirmation flow (click Delete All → inline confirm/cancel → verify all removed or retained)
+- [x] T044 [US4] Verify deletion completes within 500ms for 100 events using browser DevTools Performance tab per success criteria SC-008
 
 **Checkpoint**: All user stories (US1-US4) should now be independently functional
 

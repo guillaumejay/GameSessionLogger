@@ -1,0 +1,67 @@
+import { ref } from 'vue';
+import { liveQuery } from 'dexie';
+import { db } from '../services/db';
+import type { Event, EventTag } from '../models/Event';
+import { isValidEventTag, validateEventDescription } from '../models/Event';
+
+const events = ref<Event[]>([]);
+const isLoading = ref(false);
+const error = ref<string | null>(null);
+let currentSessionId: string | null = null;
+
+export function useEventStore() {
+  async function createEvent(sessionId: string, tag: EventTag, description: string): Promise<Event> {
+    error.value = null;
+
+    if (!sessionId) throw new Error('No active session');
+    if (!isValidEventTag(tag)) throw new Error('Invalid event tag');
+
+    const validationError = validateEventDescription(description);
+    if (validationError) throw new Error(validationError);
+
+    const event: Event = {
+      id: crypto.randomUUID(),
+      sessionId,
+      tag,
+      timestamp: new Date().toISOString(),
+      description: description.trim()
+    };
+
+    await db.events.add(event);
+    return event;
+  }
+
+  async function deleteEvent(eventId: string): Promise<void> {
+    error.value = null;
+    await db.events.delete(eventId);
+  }
+
+  async function deleteAllEvents(sessionId: string): Promise<void> {
+    error.value = null;
+    await db.events.where('sessionId').equals(sessionId).delete();
+  }
+
+  function loadEvents(sessionId: string): void {
+    currentSessionId = sessionId;
+    // Live query for events of the current session
+    liveQuery(() =>
+      db.events
+        .where('sessionId')
+        .equals(sessionId)
+        .reverse()
+        .sortBy('timestamp')
+    ).subscribe(result => {
+      events.value = result;
+    });
+  }
+
+  return {
+    events,
+    isLoading,
+    error,
+    createEvent,
+    deleteEvent,
+    deleteAllEvents,
+    loadEvents
+  };
+}

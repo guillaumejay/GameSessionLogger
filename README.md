@@ -1,7 +1,5 @@
-# GameSessionLogger
+# Vue 3 + TypeScript + Vite
 
-This is an aopplication made to easily log event (timestamp) in game session, especially role playing games.
+This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
 
-For exemple, knowing that the game started a 14H35, the first fight in this session went from 14:57 to 16:32, and so on..
-
-It's a responsive web app written in Vue3/Typescript, with all data stored locally.
+Learn more about the recommended Project Setup and IDE Support in the [Vue Docs TypeScript Guide](https://vuejs.org/guide/typescript/overview.html#project-setup).
