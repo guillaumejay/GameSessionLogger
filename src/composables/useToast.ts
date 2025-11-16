@@ -1,6 +1,9 @@
 import Swal from 'sweetalert2';
+import { useI18n } from './useI18n';
 
 export function useToast() {
+  const { t } = useI18n();
+
   function showSuccess(message: string) {
     Swal.fire({
       toast: true,
@@ -45,8 +48,8 @@ export function useToast() {
       showCancelButton: true,
       confirmButtonColor: '#dc2626',
       cancelButtonColor: '#6b7280',
-      confirmButtonText: 'Yes, delete it!',
-      cancelButtonText: 'Cancel'
+      confirmButtonText: t('common.confirmDelete'),
+      cancelButtonText: t('common.cancel')
     });
 
     return result.isConfirmed;

@@ -1,0 +1,72 @@
+{
+  "app": {
+    "title": "Journal de Session de Jeu",
+    "description": "Suivez vos sessions de jeu",
+    "selectOrCreate": "Sélectionnez ou créez une session pour commencer à enregistrer des événements"
+  },
+  "nav": {
+    "sessions": "Sessions",
+    "events": "Événements",
+    "settings": "Paramètres"
+  },
+  "session": {
+    "start": "Démarrer la session",
+    "end": "Terminer la session",
+    "duration": "Durée",
+    "title": "Sessions",
+    "name": "Nom de la session",
+    "createButton": "Créer une nouvelle session",
+    "created": "Session créée avec succès",
+    "createFailed": "Échec de la création de la session",
+    "deleted": "Session supprimée avec succès",
+    "deleteFailed": "Échec de la suppression de la session",
+    "deleteConfirmTitle": "Supprimer la session ?",
+    "deleteConfirmMessage": "Êtes-vous sûr de vouloir supprimer \"{name}\" ? Tous les événements de cette session seront définitivement supprimés.",
+    "nameExists": "Une session avec ce nom existe déjà"
+  },
+  "event": {
+    "add": "Ajouter un événement",
+    "count": "Aucun événement | {count} événements",
+    "logTitle": "Enregistrer un événement",
+    "logSuccess": "Événement enregistré avec succès !",
+    "logFailed": "Échec de l'enregistrement de l'événement",
+    "deleted": "Événement supprimé avec succès",
+    "deleteFailed": "Échec de la suppression de l'événement",
+    "allDeleted": "Tous les événements supprimés avec succès",
+    "allDeleteFailed": "Échec de la suppression de tous les événements",
+    "deleteButton": "Supprimer l'événement",
+    "deleteAllButton": "Supprimer tous les événements",
+    "delete": "Supprimer",
+    "description": "Description (optionnelle)",
+    "descriptionPlaceholder": "Ajouter une description optionnelle...",
+    "tipCtrlEnter": "Astuce : Ctrl+Entrée pour enregistrer, Échap pour effacer",
+    "characterCount": "{current}/{max} caractères",
+    "noEvents": "Aucun événement enregistré",
+    "eventLogTitle": "Journal des événements",
+    "confirm": "Confirmer",
+    "cancel": "Annuler"
+  },
+  "validation": {
+    "required": "{field} est requis",
+    "invalid": "{field} invalide"
+  },
+  "settings": {
+    "language": "Langue",
+    "title": "Paramètres"
+  },
+  "success": {
+    "copiedToClipboard": "Copié dans le presse-papiers !"
+  },
+  "error": {
+    "clipboardNotSupported": "L'accès au presse-papiers n'est pas pris en charge par votre navigateur",
+    "clipboardDenied": "Accès au presse-papiers refusé. Veuillez vérifier les permissions du navigateur.",
+    "clipboardFailed": "Échec de la copie dans le presse-papiers",
+    "storageWarning": "Limite de stockage atteinte. Veuillez supprimer d'anciennes sessions ou exporter les données."
+  },
+  "common": {
+    "confirmDelete": "Oui, supprimer !",
+    "cancel": "Annuler",
+    "noEventsToCopy": "Aucun événement à copier",
+    "copyAsMarkdown": "Copier les événements au format markdown"
+  }
+}

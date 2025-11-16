@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import { useEventStore } from '../composables/useEventStore';
 import { useToast } from '../composables/useToast';
+import { useI18n } from '../composables/useI18n';
 import { EVENT_TAGS, type EventTag } from '../models/Event';
 
 const props = defineProps<{
@@ -10,6 +11,7 @@ const props = defineProps<{
 
 const { createEvent } = useEventStore();
 const { showSuccess, showError } = useToast();
+const { t } = useI18n();
 const description = ref('');
 const isLogging = ref(false);
 const lastClickTime = ref(0);
@@ -27,10 +29,10 @@ async function handleTagClick(tag: EventTag) {
   try {
     await createEvent(props.sessionId, tag, description.value);
     description.value = ''; // Clear after successful log
-    showSuccess('Event logged successfully!');
+    showSuccess(t('event.logSuccess'));
   } catch (err) {
     console.error('Failed to create event:', err);
-    showError('Failed to log event');
+    showError(t('event.logFailed'));
   } finally {
     isLogging.value = false;
   }
@@ -52,7 +54,7 @@ function handleKeydown(event: KeyboardEvent) {
 
 <template>
   <div class="space-y-4 p-4 bg-white rounded-lg shadow">
-    <h3 class="text-lg font-semibold text-gray-900">Log Event</h3>
+    <h3 class="text-lg font-semibold text-gray-900">{{ $t('event.logTitle') }}</h3>
 
     <!-- Event tag buttons -->
     <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
@@ -70,20 +72,20 @@ function handleKeydown(event: KeyboardEvent) {
     <!-- Always-visible description field -->
     <div>
       <label for="description" class="block text-sm font-medium text-gray-700 mb-1">
-        Description (optional)
+        {{ $t('event.description') }}
       </label>
       <textarea
         id="description"
         v-model="description"
-        placeholder="Add optional description..."
+        :placeholder="$t('event.descriptionPlaceholder')"
         maxlength="500"
         rows="3"
         class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
         @keydown="handleKeydown"
       ></textarea>
       <div class="mt-1 flex justify-between text-xs text-gray-500">
-        <span>Tip: Ctrl+Enter to log, Esc to clear</span>
-        <span>{{ description.length }}/500 characters</span>
+        <span>{{ $t('event.tipCtrlEnter') }}</span>
+        <span>{{ $t('event.characterCount', { current: description.length, max: 500 }) }}</span>
       </div>
     </div>
   </div>
