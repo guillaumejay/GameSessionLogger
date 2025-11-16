@@ -55,9 +55,9 @@ function handleCancelDelete() {
           <button
             @click="handleDeleteClick"
             class="px-2 py-1 text-xs text-red-600 hover:text-red-700 hover:bg-red-50 rounded transition"
-            title="Delete event"
+            :title="$t('event.deleteButton')"
           >
-            Delete
+            {{ $t('event.delete') }}
           </button>
         </div>
         <div v-else class="flex gap-1">
@@ -65,13 +65,13 @@ function handleCancelDelete() {
             @click="handleConfirmDelete"
             class="px-2 py-1 text-xs bg-red-600 text-white hover:bg-red-700 rounded transition"
           >
-            Confirm
+            {{ $t('event.confirm') }}
           </button>
           <button
             @click="handleCancelDelete"
             class="px-2 py-1 text-xs bg-gray-300 text-gray-700 hover:bg-gray-400 rounded transition"
           >
-            Cancel
+            {{ $t('event.cancel') }}
           </button>
         </div>
       </div>

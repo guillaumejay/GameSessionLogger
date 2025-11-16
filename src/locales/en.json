@@ -1,0 +1,72 @@
+{
+  "app": {
+    "title": "Game Session Logger",
+    "description": "Track your gaming sessions",
+    "selectOrCreate": "Select or create a session to start logging events"
+  },
+  "nav": {
+    "sessions": "Sessions",
+    "events": "Events",
+    "settings": "Settings"
+  },
+  "session": {
+    "start": "Start Session",
+    "end": "End Session",
+    "duration": "Duration",
+    "title": "Sessions",
+    "name": "Session name",
+    "createButton": "Create new session",
+    "created": "Session created successfully",
+    "createFailed": "Failed to create session",
+    "deleted": "Session deleted successfully",
+    "deleteFailed": "Failed to delete session",
+    "deleteConfirmTitle": "Delete Session?",
+    "deleteConfirmMessage": "Are you sure you want to delete \"{name}\"? All events in this session will be permanently deleted.",
+    "nameExists": "A session with this name already exists"
+  },
+  "event": {
+    "add": "Add Event",
+    "count": "No events | One event | {count} events",
+    "logTitle": "Log Event",
+    "logSuccess": "Event logged successfully!",
+    "logFailed": "Failed to log event",
+    "deleted": "Event deleted successfully",
+    "deleteFailed": "Failed to delete event",
+    "allDeleted": "All events deleted successfully",
+    "allDeleteFailed": "Failed to delete all events",
+    "deleteButton": "Delete event",
+    "deleteAllButton": "Delete all events",
+    "delete": "Delete",
+    "description": "Description (optional)",
+    "descriptionPlaceholder": "Add optional description...",
+    "tipCtrlEnter": "Tip: Ctrl+Enter to log, Esc to clear",
+    "characterCount": "{current}/{max} characters",
+    "noEvents": "No events logged yet",
+    "eventLogTitle": "Event Log",
+    "confirm": "Confirm",
+    "cancel": "Cancel"
+  },
+  "validation": {
+    "required": "{field} is required",
+    "invalid": "Invalid {field}"
+  },
+  "settings": {
+    "language": "Language",
+    "title": "Settings"
+  },
+  "success": {
+    "copiedToClipboard": "Copied to clipboard!"
+  },
+  "error": {
+    "clipboardNotSupported": "Clipboard access not supported in your browser",
+    "clipboardDenied": "Clipboard access denied. Please check browser permissions.",
+    "clipboardFailed": "Failed to copy to clipboard",
+    "storageWarning": "Storage limit approaching. Please delete old sessions or export data."
+  },
+  "common": {
+    "confirmDelete": "Yes, delete it!",
+    "cancel": "Cancel",
+    "noEventsToCopy": "No events to copy",
+    "copyAsMarkdown": "Copy events as markdown table"
+  }
+}
