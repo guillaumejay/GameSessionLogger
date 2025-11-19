@@ -15,6 +15,7 @@
     "duration": "Duration",
     "title": "Sessions",
     "name": "Session name",
+    "nameRequired": "Session name is required",
     "createButton": "Create new session",
     "created": "Session created successfully",
     "createFailed": "Failed to create session",
@@ -23,6 +24,14 @@
     "deleteConfirmTitle": "Delete Session?",
     "deleteConfirmMessage": "Are you sure you want to delete \"{name}\"? All events in this session will be permanently deleted.",
     "nameExists": "A session with this name already exists"
+  },
+  "sessionType": {
+    "label": "Session Type",
+    "rpg": "RPG",
+    "boardgame": "Boardgame",
+    "required": "Please select a session type",
+    "addRpg": "Add RPG Session",
+    "addBoardgame": "Add Boardgame Session"
   },
   "event": {
     "add": "Add Event",
@@ -45,6 +54,18 @@
     "eventLogTitle": "Event Log",
     "confirm": "Confirm",
     "cancel": "Cancel"
+  },
+  "eventTag": {
+    "combat": "Combat",
+    "roleplay": "Roleplay",
+    "downtime": "Downtime",
+    "scoring": "Scoring",
+    "meal": "Meal",
+    "other": "Other",
+    "setup": "Setup",
+    "turn": "Turn",
+    "round": "Round",
+    "teardown": "Teardown"
   },
   "validation": {
     "required": "{field} is required",

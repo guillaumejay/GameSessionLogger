@@ -1,4 +1,8 @@
-export const EVENT_TAGS = ['Combat', 'Roleplay', 'Downtime', 'Scoring', 'Meal', 'Other'] as const;
+export const RPG_TAGS = ['Combat', 'Roleplay', 'Downtime', 'Scoring', 'Meal', 'Other'] as const;
+export const BOARDGAME_TAGS = ['Setup', 'Turn', 'Round', 'Scoring', 'Teardown', 'Other'] as const;
+
+// Union of all possible tags across all session types
+export const EVENT_TAGS = [...RPG_TAGS, ...BOARDGAME_TAGS] as const;
 export type EventTag = typeof EVENT_TAGS[number];
 
 export interface Event {

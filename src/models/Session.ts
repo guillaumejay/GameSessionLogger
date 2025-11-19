@@ -1,6 +1,9 @@
+import type { SessionType } from './SessionType';
+
 export interface Session {
   id: string;
   name: string;
+  type: SessionType;
   createdAt: string;  // ISO 8601
   updatedAt: string;  // ISO 8601
 }

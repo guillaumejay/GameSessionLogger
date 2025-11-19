@@ -3,6 +3,7 @@ import { ref, computed } from 'vue';
 import { useSessionStore } from '../composables/useSessionStore';
 import { useToast } from '../composables/useToast';
 import { useI18n } from '../composables/useI18n';
+import type { SessionType } from '../models/SessionType';
 
 const { sessions, activeSession, createSession, setActiveSession, deleteSession } = useSessionStore();
 const { showSuccess, showError, showWarning, confirm } = useToast();
@@ -17,8 +18,11 @@ const nameExistsWarning = computed(() => {
   return exists ? t('session.nameExists') : null;
 });
 
-async function handleCreateSession() {
-  if (!newSessionName.value.trim()) return;
+async function handleCreateSession(type: SessionType) {
+  if (!newSessionName.value.trim()) {
+    showError(t('session.nameRequired'));
+    return;
+  }
 
   // Show non-blocking warning for duplicate name
   if (nameExistsWarning.value) {
@@ -27,7 +31,7 @@ async function handleCreateSession() {
 
   isCreating.value = true;
   try {
-    const session = await createSession(newSessionName.value);
+    const session = await createSession(newSessionName.value, type);
     await setActiveSession(session.id);
     newSessionName.value = '';
     showSuccess(t('session.created'));
@@ -72,6 +76,10 @@ function formatSessionDate(isoString: string): string {
     minute: '2-digit'
   }).format(date);
 }
+
+function getSessionTypeIcon(type: SessionType): string {
+  return type === 'RPG' ? '🎲' : '🎯';
+}
 </script>
 
 <template>
@@ -79,25 +87,32 @@ function formatSessionDate(isoString: string): string {
     <h2 class="text-xl font-bold text-gray-900">{{ $t('session.title') }}</h2>
 
     <!-- Create new session -->
-    <div class="flex gap-2">
-      <input
-        v-model="newSessionName"
-        type="text"
-        :placeholder="$t('session.name')"
-        maxlength="100"
-        class="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-        @keyup.enter="handleCreateSession"
-      />
-      <button
-        @click="handleCreateSession"
-        :disabled="isCreating || !newSessionName.trim()"
-        class="px-3 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition"
-        :title="$t('session.createButton')"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-          <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
-        </svg>
-      </button>
+    <div class="space-y-2">
+      <div class="flex gap-2">
+        <input
+          v-model="newSessionName"
+          type="text"
+          :placeholder="$t('session.name')"
+          maxlength="100"
+          class="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+        <button
+          @click="handleCreateSession('RPG')"
+          :disabled="isCreating || !newSessionName.trim()"
+          class="px-3 py-2 bg-indigo-500 text-white rounded-md hover:bg-indigo-600 disabled:opacity-50 disabled:cursor-not-allowed transition flex items-center gap-1"
+          :title="$t('sessionType.addRpg')"
+        >
+          <span class="text-xl" role="img" :aria-label="$t('sessionType.rpg')">🎲</span>
+        </button>
+        <button
+          @click="handleCreateSession('Boardgame')"
+          :disabled="isCreating || !newSessionName.trim()"
+          class="px-3 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 disabled:opacity-50 disabled:cursor-not-allowed transition flex items-center gap-1"
+          :title="$t('sessionType.addBoardgame')"
+        >
+          <span class="text-xl" role="img" :aria-label="$t('sessionType.boardgame')">🎯</span>
+        </button>
+      </div>
     </div>
 
     <!-- Session list -->
@@ -109,23 +124,33 @@ function formatSessionDate(isoString: string): string {
       >
         <button
           @click="handleSelectSession(session.id)"
-          class="w-full text-left px-3 py-2 rounded-md transition pr-10"
+          class="w-full text-left px-3 py-2 rounded-md transition pr-10 flex items-start gap-2"
           :class="[
             activeSession?.id === session.id
               ? 'bg-blue-500 text-white'
               : 'bg-white text-gray-900 hover:bg-gray-50'
           ]"
         >
-          <div class="font-medium">{{ session.name }}</div>
-          <div
-            class="text-xs mt-0.5"
-            :class="[
-              activeSession?.id === session.id
-                ? 'text-blue-100'
-                : 'text-gray-500'
-            ]"
+          <span
+            class="session-type-icon text-xl"
+            :title="$t(`sessionType.${session.type.toLowerCase()}`)"
+            role="img"
+            :aria-label="$t(`sessionType.${session.type.toLowerCase()}`)"
           >
-            {{ formatSessionDate(session.createdAt) }}
+            {{ getSessionTypeIcon(session.type) }}
+          </span>
+          <div class="flex-1">
+            <div class="font-medium">{{ session.name }}</div>
+            <div
+              class="text-xs mt-0.5"
+              :class="[
+                activeSession?.id === session.id
+                  ? 'text-blue-100'
+                  : 'text-gray-500'
+              ]"
+            >
+              {{ formatSessionDate(session.createdAt) }}
+            </div>
           </div>
         </button>
         <button

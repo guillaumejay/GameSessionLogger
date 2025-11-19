@@ -3,6 +3,8 @@ import { liveQuery } from 'dexie';
 import { db } from '../services/db';
 import type { Session } from '../models/Session';
 import { validateSessionName } from '../models/Session';
+import type { SessionType } from '../models/SessionType';
+import { isValidSessionType, normalizeSessionType } from '../models/SessionType';
 
 const sessions = ref<Session[]>([]);
 const activeSession = ref<Session | null>(null);
@@ -10,20 +12,29 @@ const isLoading = ref(false);
 const error = ref<string | null>(null);
 
 export function useSessionStore() {
-  // Load sessions with live query
+  // Load sessions with live query and normalize types
   liveQuery(() => db.sessions.orderBy('createdAt').reverse().toArray())
     .subscribe(result => {
-      sessions.value = result;
+      // Normalize session types for corrupted data
+      sessions.value = result.map(s => ({
+        ...s,
+        type: normalizeSessionType(s.type)
+      }));
     });
 
-  async function createSession(name: string): Promise<Session> {
+  async function createSession(name: string, type: SessionType): Promise<Session> {
     error.value = null;
     const validationError = validateSessionName(name);
     if (validationError) throw new Error(validationError);
 
+    if (!isValidSessionType(type)) {
+      throw new Error('Invalid session type');
+    }
+
     const session: Session = {
       id: crypto.randomUUID(),
       name: name.trim(),
+      type,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
     };
