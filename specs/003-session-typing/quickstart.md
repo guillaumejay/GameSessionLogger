@@ -269,7 +269,7 @@ async function loadSessions() {
 
 **File**: `src/components/SessionSelector.vue` (MODIFY)
 
-**Add** reactive state for type selection:
+**Update** script to handle type parameter:
 ```typescript
 <script setup lang="ts">
 import { ref } from 'vue';
@@ -277,22 +277,20 @@ import { SessionType } from '@/models/SessionType';  // ADD
 
 // Existing refs
 const newSessionName = ref('');
-const newSessionType = ref<SessionType | ''>('');  // ADD
+// Note: No newSessionType ref needed - type is passed directly via button click
 
 const { createSession } = useSessionStore();
 const { t } = useI18n();  // ADD for translations
 
-async function handleCreateSession() {
-  if (!newSessionType.value) {
-    // Browser validation should prevent this, but add fallback
-    alert(t('sessionType.required'));
+async function handleCreateSession(type: SessionType) {  // CHANGED: Accept type parameter
+  if (!newSessionName.value.trim()) {
+    alert(t('session.nameRequired'));
     return;
   }
 
   try {
-    await createSession(newSessionName.value, newSessionType.value);
-    newSessionName.value = '';
-    newSessionType.value = '';  // Reset
+    await createSession(newSessionName.value, type);  // CHANGED: Pass type parameter
+    newSessionName.value = '';  // Reset name only
   } catch (error) {
     alert(error.message);
   }
@@ -305,38 +303,40 @@ function getSessionTypeIcon(type: SessionType): string {
 </script>
 ```
 
-**Update** template - add type selector to form:
+**Update** template - add two dedicated type buttons:
 ```vue
 <template>
   <!-- ... existing session list ... -->
 
   <!-- Create Session Form -->
-  <form @submit.prevent="handleCreateSession" class="create-session-form">
+  <div class="flex gap-2">
     <input
       v-model="newSessionName"
       type="text"
-      :placeholder="t('session.namePlaceholder')"
-      required
+      :placeholder="$t('session.name')"
       maxlength="100"
-      class="session-name-input"
+      class="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
     />
 
-    <!-- ADD: Session type selector -->
-    <select
-      v-model="newSessionType"
-      required
-      :aria-label="t('sessionType.label')"
-      class="session-type-select"
+    <!-- ADD: Two dedicated type buttons with icons -->
+    <button
+      @click="handleCreateSession('RPG')"
+      :disabled="!newSessionName.trim()"
+      class="px-3 py-2 bg-indigo-500 text-white rounded-md hover:bg-indigo-600 disabled:opacity-50 disabled:cursor-not-allowed transition flex items-center gap-1"
+      :title="$t('sessionType.addRpg')"
     >
-      <option value="">{{ t('sessionType.label') }}</option>
-      <option value="RPG">{{ t('sessionType.rpg') }}</option>
-      <option value="Boardgame">{{ t('sessionType.boardgame') }}</option>
-    </select>
-
-    <button type="submit" class="create-button">
-      {{ t('session.create') }}
+      <span class="text-xl" role="img" :aria-label="$t('sessionType.rpg')">🎲</span>
     </button>
-  </form>
+
+    <button
+      @click="handleCreateSession('Boardgame')"
+      :disabled="!newSessionName.trim()"
+      class="px-3 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 disabled:opacity-50 disabled:cursor-not-allowed transition flex items-center gap-1"
+      :title="$t('sessionType.addBoardgame')"
+    >
+      <span class="text-xl" role="img" :aria-label="$t('sessionType.boardgame')">🎯</span>
+    </button>
+  </div>
 </template>
 ```
 
@@ -369,22 +369,9 @@ function getSessionTypeIcon(type: SessionType): string {
 </template>
 ```
 
-**Add** styles (optional, adjust to match existing theme):
+**Note on styles**: The example above uses Tailwind CSS classes (as per project standards). If you need custom styles for the session type icon, add:
 ```vue
 <style scoped>
-.create-session-form {
-  display: flex;
-  gap: 0.5rem;
-  margin-bottom: 1rem;
-}
-
-.session-type-select {
-  padding: 0.5rem;
-  border: 1px solid #ccc;
-  border-radius: 0.25rem;
-  font-size: 1rem;
-}
-
 .session-type-icon {
   font-size: 1.2rem;
   margin-right: 0.5rem;
@@ -394,10 +381,10 @@ function getSessionTypeIcon(type: SessionType): string {
 ```
 
 **Test**:
-1. Create RPG session → verify 🎲 icon appears
-2. Create Boardgame session → verify 🎯 icon appears
-3. Hover over icons → verify tooltip shows type name
-4. Try submitting form without selecting type → verify validation error
+1. Enter session name and click RPG button (🎲) → verify session created with RPG type and 🎲 icon appears in list
+2. Enter session name and click Boardgame button (🎯) → verify session created with Boardgame type and 🎯 icon appears in list
+3. Hover over session type icons in list → verify tooltip shows type name
+4. Try clicking type button without entering name → verify buttons are disabled
 
 ---
 
@@ -468,7 +455,9 @@ const availableTags = computed(() => {
     "label": "Session Type",
     "rpg": "RPG",
     "boardgame": "Boardgame",
-    "required": "Please select a session type"
+    "required": "Please select a session type",
+    "addRpg": "Add RPG Session",
+    "addBoardgame": "Add Boardgame Session"
   },
   "eventTag": {
     "combat": "Combat",
@@ -498,7 +487,9 @@ const availableTags = computed(() => {
     "label": "Type de session",
     "rpg": "JdR",
     "boardgame": "Jeu de plateau",
-    "required": "Veuillez sélectionner un type de session"
+    "required": "Veuillez sélectionner un type de session",
+    "addRpg": "Ajouter une session JdR",
+    "addBoardgame": "Ajouter une session jeu de plateau"
   },
   "eventTag": {
     "combat": "Combat",
@@ -528,15 +519,16 @@ const availableTags = computed(() => {
 #### Step 6.1: Manual testing checklist
 
 - [ ] Create RPG session
-  - [ ] Type selector shows in form
-  - [ ] Cannot submit without selecting type
-  - [ ] Session created with RPG type
+  - [ ] Two type buttons (🎲 RPG and 🎯 Boardgame) visible in form
+  - [ ] RPG button disabled when no session name entered
+  - [ ] Enter name and click RPG button → session created with RPG type
   - [ ] Icon 🎲 appears in session list
   - [ ] Tooltip shows "RPG" on hover
   - [ ] Event tags: Combat, Roleplay, Downtime, Scoring, Meal, Other
 
 - [ ] Create Boardgame session
-  - [ ] Session created with Boardgame type
+  - [ ] Boardgame button disabled when no session name entered
+  - [ ] Enter name and click Boardgame button → session created with Boardgame type
   - [ ] Icon 🎯 appears in session list
   - [ ] Tooltip shows "Boardgame" on hover
   - [ ] Event tags: Setup, Turn, Round, Scoring, Teardown, Other
@@ -576,9 +568,8 @@ test('user can create RPG session and see RPG tags', async ({ page }) => {
   await page.goto('http://localhost:5173');
 
   // Create RPG session
-  await page.fill('input[placeholder="Session name"]', 'My RPG Game');
-  await page.selectOption('select', 'RPG');
-  await page.click('button:has-text("Create")');
+  await page.fill('input[placeholder*="Session"]', 'My RPG Game');
+  await page.click('button[title*="RPG"]'); // Click RPG button with 🎲 icon
 
   // Verify icon
   await expect(page.locator('.session-type-icon').first()).toHaveText('🎲');
@@ -592,9 +583,8 @@ test('user can create Boardgame session and see Boardgame tags', async ({ page }
   await page.goto('http://localhost:5173');
 
   // Create Boardgame session
-  await page.fill('input[placeholder="Session name"]', 'My Board Game');
-  await page.selectOption('select', 'Boardgame');
-  await page.click('button:has-text("Create")');
+  await page.fill('input[placeholder*="Session"]', 'My Board Game');
+  await page.click('button[title*="Boardgame"]'); // Click Boardgame button with 🎯 icon
 
   // Verify icon
   await expect(page.locator('.session-type-icon').first()).toHaveText('🎯');

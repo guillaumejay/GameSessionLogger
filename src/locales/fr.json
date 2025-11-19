@@ -15,6 +15,7 @@
     "duration": "Durée",
     "title": "Sessions",
     "name": "Nom de la session",
+    "nameRequired": "Le nom de la session est requis",
     "createButton": "Créer une nouvelle session",
     "created": "Session créée avec succès",
     "createFailed": "Échec de la création de la session",
@@ -23,6 +24,14 @@
     "deleteConfirmTitle": "Supprimer la session ?",
     "deleteConfirmMessage": "Êtes-vous sûr de vouloir supprimer \"{name}\" ? Tous les événements de cette session seront définitivement supprimés.",
     "nameExists": "Une session avec ce nom existe déjà"
+  },
+  "sessionType": {
+    "label": "Type de session",
+    "rpg": "JdR",
+    "boardgame": "Jeu de plateau",
+    "required": "Veuillez sélectionner un type de session",
+    "addRpg": "Ajouter une session JdR",
+    "addBoardgame": "Ajouter une session jeu de plateau"
   },
   "event": {
     "add": "Ajouter un événement",
@@ -45,6 +54,18 @@
     "eventLogTitle": "Journal des événements",
     "confirm": "Confirmer",
     "cancel": "Annuler"
+  },
+  "eventTag": {
+    "combat": "Combat",
+    "roleplay": "Jeu de rôle",
+    "downtime": "Temps libre",
+    "scoring": "Score",
+    "meal": "Repas",
+    "other": "Autre",
+    "setup": "Mise en place",
+    "turn": "Tour",
+    "round": "Manche",
+    "teardown": "Rangement"
   },
   "validation": {
     "required": "{field} est requis",

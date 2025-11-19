@@ -10,7 +10,7 @@
 ### Session 2025-11-18
 
 - Q: When a user upgrades to this feature, how should the system handle sessions that were created before session typing existed? → A: Automatically assign "RPG" type to all existing sessions (silent migration, backward compatible)
-- Q: Where in the session creation flow should the session type selection appear? → A: Add as mandatory field in existing session creation form (select type with name in same form)
+- Q: Where in the session creation flow should the session type selection appear? → A: Add two dedicated buttons (one for RPG, one for Boardgame) with icons alongside the session name field
 - Q: Should the session type icons include additional visual cues (like tooltips or labels) to help users understand their meaning? → A: Icons with hover tooltips showing type name (accessible and discoverable)
 - Q: Should session type names ("RPG", "Boardgame") and their tooltips be internationalized using the existing i18n system from feature 002? → A: Yes, internationalize all session type labels and tooltips (consistent with feature 002)
 - Q: How should the system handle a session with an invalid type value (e.g., corrupted data, unexpected value)? → A: Treat invalid types as "RPG" (silent fallback to default, graceful degradation)
@@ -19,18 +19,18 @@
 
 ### User Story 1 - Session Type Selection (Priority: P1)
 
-When creating a new game session, a user needs to specify whether they are logging an RPG session or a Boardgame session within the session creation form. The session type field appears alongside the session name field as a mandatory input. The session type determines which event tags will be available for logging events during that session.
+When creating a new game session, a user needs to specify whether they are logging an RPG session or a Boardgame session by clicking one of two dedicated buttons. The session creation form displays the session name input field alongside two buttons (🎲 for RPG, 🎯 for Boardgame). Clicking a button creates the session with that type. The session type determines which event tags will be available for logging events during that session.
 
 **Why this priority**: This is the foundational MVP functionality. Without the ability to select a session type, users cannot access the appropriate event tags for their game type. This must work before any other session typing features.
 
-**Independent Test**: Can be fully tested by opening the session creation form, verifying the type field is present alongside the name field, selecting "RPG" or "Boardgame" as the session type, and verifying that the session is created with the correct type indicator.
+**Independent Test**: Can be fully tested by opening the session creation form, verifying two type buttons (RPG and Boardgame) are present alongside the name field, entering a session name, clicking a type button, and verifying that the session is created with the correct type indicator.
 
 **Acceptance Scenarios**:
 
-1. **Given** the user opens the session creation form, **When** they view the form, **Then** the session type field is visible alongside the session name field
-2. **Given** the user is in the session creation form, **When** they select "RPG" as the session type, enter a session name, and submit, **Then** the session is created with type "RPG"
-3. **Given** the user is in the session creation form, **When** they select "Boardgame" as the session type, enter a session name, and submit, **Then** the session is created with type "Boardgame"
-4. **Given** the user is in the session creation form, **When** they enter a session name but do not select a type and attempt to submit, **Then** the system prevents session creation and prompts the user to select a type (type selection is mandatory)
+1. **Given** the user opens the session creation form, **When** they view the form, **Then** two buttons with icons (🎲 RPG and 🎯 Boardgame) are visible alongside the session name field
+2. **Given** the user is in the session creation form, **When** they enter a session name and click the RPG button (🎲), **Then** the session is created with type "RPG"
+3. **Given** the user is in the session creation form, **When** they enter a session name and click the Boardgame button (🎯), **Then** the session is created with type "Boardgame"
+4. **Given** the user is in the session creation form, **When** they have not entered a session name and click either type button, **Then** the system prevents session creation and shows an error message (session name is mandatory)
 
 ---
 

@@ -1,21 +1,31 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { useEventStore } from '../composables/useEventStore';
+import { useSessionStore } from '../composables/useSessionStore';
 import { useToast } from '../composables/useToast';
 import { useI18n } from '../composables/useI18n';
-import { EVENT_TAGS, type EventTag } from '../models/Event';
+import { type EventTag } from '../models/Event';
+import { getTagsForSessionType } from '../utils/sessionTypeTags';
 
 const props = defineProps<{
   sessionId: string;
 }>();
 
 const { createEvent } = useEventStore();
+const { sessions } = useSessionStore();
 const { showSuccess, showError } = useToast();
 const { t } = useI18n();
 const description = ref('');
 const isLogging = ref(false);
 const lastClickTime = ref(0);
 const DEBOUNCE_MS = 300;
+
+// Compute available tags based on session type
+const availableTags = computed((): readonly EventTag[] => {
+  const session = sessions.value.find(s => s.id === props.sessionId);
+  if (!session) return [];
+  return getTagsForSessionType(session.type);
+});
 
 async function handleTagClick(tag: EventTag) {
   // Debounce rapid clicks
@@ -56,10 +66,10 @@ function handleKeydown(event: KeyboardEvent) {
   <div class="space-y-4 p-4 bg-white rounded-lg shadow">
     <h3 class="text-lg font-semibold text-gray-900">{{ $t('event.logTitle') }}</h3>
 
-    <!-- Event tag buttons -->
+    <!-- Event tag buttons (dynamic based on session type) -->
     <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
       <button
-        v-for="tag in EVENT_TAGS"
+        v-for="tag in availableTags"
         :key="tag"
         @click="handleTagClick(tag)"
         :disabled="isLogging"
