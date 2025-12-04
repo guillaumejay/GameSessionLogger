@@ -10,7 +10,7 @@ const props = defineProps<{
   sessionId: string;
 }>();
 
-const { events, loadEvents, deleteEvent, deleteAllEvents } = useEventStore();
+const { events, loadEvents, deleteEvent, deleteAllEvents, closeEvent } = useEventStore();
 const { showSuccess, showError } = useToast();
 const { t } = useI18n();
 const confirmingEventId = ref<string | null>(null);
@@ -63,6 +63,16 @@ async function handleBulkDeleteConfirmed() {
 
 function handleBulkDeleteCancelled() {
   showBulkDeleteConfirmation.value = false;
+}
+
+async function handleCloseEvent(eventId: string) {
+  try {
+    await closeEvent(eventId);
+    showSuccess(t('event.closed'));
+  } catch (err) {
+    console.error('Failed to close event:', err);
+    showError(t('event.closeFailed'));
+  }
 }
 </script>
 
@@ -120,6 +130,7 @@ function handleBulkDeleteCancelled() {
         @delete-requested="handleDeleteRequested"
         @delete-confirmed="handleDeleteConfirmed"
         @delete-cancelled="handleDeleteCancelled"
+        @close-event="handleCloseEvent"
       />
     </div>
   </div>

@@ -53,18 +53,23 @@
     "noEvents": "Aucun événement enregistré",
     "eventLogTitle": "Journal des événements",
     "confirm": "Confirmer",
-    "cancel": "Annuler"
+    "cancel": "Annuler",
+    "close": "Fermer {tag}",
+    "ongoing": "En cours",
+    "closed": "Événement fermé avec succès",
+    "closeFailed": "Échec de la fermeture de l'événement"
   },
   "eventTag": {
     "combat": "Combat",
     "roleplay": "Jeu de rôle",
-    "downtime": "Temps libre",
-    "scoring": "Score",
+    "meta": "Méta",
+    "adventuring": "Aventure",
     "meal": "Repas",
     "other": "Autre",
     "setup": "Mise en place",
     "turn": "Tour",
     "round": "Manche",
+    "scoring": "Score",
     "teardown": "Rangement"
   },
   "validation": {

@@ -29,6 +29,13 @@ export class GameSessionDatabase extends Dexie {
       });
       console.log('Database migration to v2 complete');
     });
+
+    // Version 3: Add event duration support (endTimestamp field)
+    // No upgrade function needed - endTimestamp is optional, existing events will have undefined
+    this.version(3).stores({
+      sessions: 'id, type, createdAt',
+      events: 'id, [sessionId+timestamp]'  // No index change needed for endTimestamp
+    });
   }
 }
 

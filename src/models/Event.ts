@@ -1,4 +1,4 @@
-export const RPG_TAGS = ['Combat', 'Roleplay', 'Downtime', 'Scoring', 'Meal', 'Other'] as const;
+export const RPG_TAGS = ['Combat', 'Roleplay', 'Meta', 'Adventuring', 'Meal', 'Other'] as const;
 export const BOARDGAME_TAGS = ['Setup', 'Turn', 'Round', 'Scoring', 'Teardown', 'Other'] as const;
 
 // Union of all possible tags across all session types
@@ -9,7 +9,8 @@ export interface Event {
   id: string;
   sessionId: string;
   tag: EventTag;
-  timestamp: string;  // ISO 8601
+  timestamp: string;  // ISO 8601 start time
+  endTimestamp?: string;  // ISO 8601 end time (optional, undefined = open event)
   description: string;
 }
 
