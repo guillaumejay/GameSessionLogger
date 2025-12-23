@@ -12,10 +12,24 @@ export type DurationDisplay =
  * Format duration between two ISO timestamps into human-readable string
  * @param startIso - ISO 8601 start timestamp
  * @param endIso - ISO 8601 end timestamp
- * @returns Formatted duration string (e.g., "< 1 min", "45 min", "1h 20min")
+ * @returns Formatted duration string (e.g., "< 1 min", "45 min", "1h 20min") or "—" for invalid data
  */
 export function formatDuration(startIso: string, endIso: string): string {
-  const ms = Date.parse(endIso) - Date.parse(startIso);
+  const startMs = Date.parse(startIso);
+  const endMs = Date.parse(endIso);
+
+  // Validate timestamps
+  if (isNaN(startMs) || isNaN(endMs)) {
+    return '—';
+  }
+
+  const ms = endMs - startMs;
+
+  // Handle negative duration (corrupted data or clock issues)
+  if (ms < 0) {
+    return '—';
+  }
+
   const totalMinutes = Math.floor(ms / 60000);
   const hours = Math.floor(totalMinutes / 60);
   const minutes = totalMinutes % 60;

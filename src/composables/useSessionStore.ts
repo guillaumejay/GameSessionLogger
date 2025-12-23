@@ -1,4 +1,4 @@
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { liveQuery } from 'dexie';
 import { db } from '../services/db';
 import type { Session } from '../models/Session';
@@ -7,9 +7,15 @@ import type { SessionType } from '../models/SessionType';
 import { isValidSessionType, normalizeSessionType } from '../models/SessionType';
 
 const sessions = ref<Session[]>([]);
-const activeSession = ref<Session | null>(null);
+const activeSessionId = ref<string | null>(null);
 const isLoading = ref(false);
 const error = ref<string | null>(null);
+
+// Computed property that derives activeSession from sessions array
+// This ensures activeSession is always in sync with the latest data
+const activeSession = computed<Session | null>(() =>
+  sessions.value.find(s => s.id === activeSessionId.value) ?? null
+);
 
 export function useSessionStore() {
   // Load sessions with live query and normalize types
@@ -50,8 +56,8 @@ export function useSessionStore() {
     await db.sessions.delete(sessionId);
 
     // Clear active session if deleted
-    if (activeSession.value?.id === sessionId) {
-      activeSession.value = null;
+    if (activeSessionId.value === sessionId) {
+      activeSessionId.value = null;
       localStorage.removeItem('activeSessionId');
     }
   }
@@ -60,7 +66,7 @@ export function useSessionStore() {
     const session = await db.sessions.get(sessionId);
     if (!session) throw new Error('Session not found');
 
-    activeSession.value = session;
+    activeSessionId.value = sessionId;
     localStorage.setItem('activeSessionId', sessionId);
   }
 
@@ -71,7 +77,7 @@ export function useSessionStore() {
       const savedId = localStorage.getItem('activeSessionId');
       if (savedId) {
         const session = await db.sessions.get(savedId);
-        if (session) activeSession.value = session;
+        if (session) activeSessionId.value = savedId;
       }
     } finally {
       isLoading.value = false;
