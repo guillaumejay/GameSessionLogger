@@ -53,18 +53,23 @@
     "noEvents": "No events logged yet",
     "eventLogTitle": "Event Log",
     "confirm": "Confirm",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "close": "Close {tag}",
+    "ongoing": "Ongoing",
+    "closed": "Event closed successfully",
+    "closeFailed": "Failed to close event"
   },
   "eventTag": {
     "combat": "Combat",
     "roleplay": "Roleplay",
-    "downtime": "Downtime",
-    "scoring": "Scoring",
+    "meta": "Meta",
+    "adventuring": "Adventuring",
     "meal": "Meal",
     "other": "Other",
     "setup": "Setup",
     "turn": "Turn",
     "round": "Round",
+    "scoring": "Scoring",
     "teardown": "Teardown"
   },
   "validation": {
